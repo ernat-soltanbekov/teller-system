@@ -1,0 +1,11 @@
+/build/
+/teller-system
+/atm
+/data/teller.db*
+/data/.lock
+/data/.snapshots/
+/data/.current
+/data/.link-*
+__pycache__/
+*.core
+.DS_Store

@@ -1,0 +1,5 @@
+{
+  "url": "https://assets.01-edu.org/atm-system/atm-system.zip",
+  "sha256": "b07495e7541d58b652dc6d404b1bd7b6314bacd72f645a9a5cbfe3d03f0fd07c",
+  "changes": "Refactored terminal flow, validated persistence, salted password hashes, transactional SQLite, text snapshots, analyzer and tests."
+}
