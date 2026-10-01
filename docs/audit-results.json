@@ -1,0 +1,24 @@
+{
+  "functional": {
+    "audit_accounts": 5,
+    "notification_ms_including_sender_login": 205.121
+  },
+  "ratio_cases": 8,
+  "crash_boundaries": 4,
+  "malformed_imports": 12,
+  "stress": {
+    "model_operations": 120,
+    "accepted_model_operations": 112,
+    "competing_withdrawals": 16,
+    "simultaneous_workers": 8,
+    "concurrent_registrations": 6
+  },
+  "storage_failure_cases": 6,
+  "terminal": {
+    "overlong_input_bytes": 10000,
+    "eof_cases": 4,
+    "password_echo_and_sigterm": "PASS"
+  },
+  "status": "PASS",
+  "elapsed_seconds": 8.551
+}
