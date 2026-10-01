@@ -1,0 +1,44 @@
+name: Audit
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    strategy:
+      matrix:
+        compiler: [gcc, clang]
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Install development libraries
+        run: sudo apt-get update && sudo apt-get install -y build-essential clang libclang-rt-dev pkg-config libsqlite3-dev libssl-dev
+      - name: Build, unit tests, full audit, ASan and UBSan
+        run: make CC=${{ matrix.compiler }} check
+        env:
+          ASAN_OPTIONS: detect_leaks=1:abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+      - name: Static analysis and parser fuzzing
+        if: matrix.compiler == 'clang'
+        run: make analyze fuzz stress
+        env:
+          ASAN_OPTIONS: detect_leaks=1:abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+
+  macos:
+    runs-on: macos-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Locate Homebrew development libraries
+        run: |
+          brew list openssl@3 pkgconf sqlite >/dev/null || brew install openssl@3 pkgconf sqlite
+          echo "PKG_CONFIG_PATH=$(brew --prefix openssl@3)/lib/pkgconfig:$(brew --prefix sqlite)/lib/pkgconfig" >> "$GITHUB_ENV"
+      - name: Build and audit on macOS
+        run: make check
