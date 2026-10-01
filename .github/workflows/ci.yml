@@ -13,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     strategy:
+      fail-fast: false
       matrix:
         compiler: [gcc, clang]
     steps:
@@ -26,7 +27,7 @@ jobs:
           UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
       - name: Static analysis and parser fuzzing
         if: matrix.compiler == 'clang'
-        run: make analyze fuzz stress
+        run: make CC=clang analyze fuzz stress
         env:
           ASAN_OPTIONS: detect_leaks=1:abort_on_error=1
           UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1

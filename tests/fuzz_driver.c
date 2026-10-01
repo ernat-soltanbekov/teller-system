@@ -15,7 +15,7 @@ int main(void) {
         random = random * UINT64_C(6364136223846793005) + 1;
         size_t size = (size_t)(random % sizeof(data));
         if (i % 2 == 0) {
-            const char *seed = seeds[i % (sizeof(seeds) / sizeof(seeds[0]))];
+            const char *seed = seeds[(i / 2) % (sizeof(seeds) / sizeof(seeds[0]))];
             size = strlen(seed);
             memcpy(data, seed, size);
             data[(random >> 10) % size] = (uint8_t)(random >> 32);

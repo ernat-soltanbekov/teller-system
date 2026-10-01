@@ -242,9 +242,10 @@ static void test_operations(const char *root) {
     CHECK(!account_transact(&app, &alice, 834213, "deposit", -1));
     CHECK(!account_transact(&app, &laura, 834213, "deposit", 100));
     CHECK(scalar(&app, "SELECT COUNT(*) FROM transactions") == count);
+    const char *fixed_types[] = {"fixed01", "fixed02", "fixed03"};
     for (int i = 1; i <= 3; i++) {
         account.number = 3200 + i;
-        snprintf(account.kind, sizeof(account.kind), "fixed0%d", i);
+        strcpy(account.kind, fixed_types[i - 1]);
         CHECK(account_create(&app, &alice, &account));
         CHECK(!account_transact(&app, &alice, account.number, "deposit", 100));
         CHECK(!account_transact(&app, &alice, account.number, "withdrawal", 100));
